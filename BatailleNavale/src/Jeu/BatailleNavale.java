@@ -31,7 +31,7 @@ import Jeu.classes.Bateau;
 	   * méthode d'affichage de la mer adverse à l'écran 
 	   * @return aAfficher mer à afficher à l'écran 
 	   */
-	  public static StringBuilder afficherMer(int[][] aConvertir) 
+	public static StringBuilder afficherMer(int[][] aConvertir) 
 	  throws IllegalArgumentException {
 		  
 		  // Alignement de la numérotation dès la création 
@@ -96,8 +96,7 @@ import Jeu.classes.Bateau;
 
 	        boolean resultat = false;           // vrai si la chaine est correcte
 	        Matcher matcherVal = patterneCoord.matcher(aTester);
-	        resultat = matcherVal.matches();  
-	       
+	        resultat = matcherVal.matches();
 	        
 	        return resultat;
 	  }
@@ -117,8 +116,8 @@ import Jeu.classes.Bateau;
 		  
 		  lettre = aTraduire.nextToken().charAt(0);
 		  
-		  coordChiffre[0] = Character.getNumericValue(lettre);;
-		  coordChiffre[1] = (Integer.parseInt(aTraduire.nextToken()));
+		  coordChiffre[0] = Character.getNumericValue(lettre) - 10;
+		  coordChiffre[1] = Integer.parseInt(aTraduire.nextToken()) - 1;
 		  return coordChiffre;
 	  }
 	  
@@ -126,17 +125,12 @@ import Jeu.classes.Bateau;
 	   * méthode estOccupe qui détermine si les coordonnées saisie contiennent un bateau 
 	   */
 	  public static boolean estOccupe(int[] aTester) {
-		  
-		 // TODO : Remplacer le bouchon par la vrai mer quand la fonction getEtatMer sera codée 
-		 //int[][] etatMerOrdinateur = Mer.getEtatMer();
-		  int[][] etatMerOrdinateur = new int[12][12]; // STUB
-		  
-		 if (!(etatMerOrdinateur[aTester[0]][aTester[1]] == 1)) {
+		  if (Mer.getEtatPosition(aTester[0], aTester[1]) == 0) {
 			  return false;
+		 } else {
+			 return true;
 		 }
-		  
-		  miseAJourDonnee(aTester);
-		  return true;
+		  //miseAJourDonnee(aTester);
 	  }   
 	  
 	  /**

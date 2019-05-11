@@ -26,7 +26,7 @@ public class Mer {
     private int largeur;
 
     /** Position des bateaux sur la mer */
-    private int[][] etatMer;
+    private static int[][] etatMer;
 
     /** Ensemble des bateaux contenus dans la mer */
     List<Bateau> bateaux = new ArrayList<>();
@@ -64,7 +64,7 @@ public class Mer {
      * @param y position en ordonnée du point cherché
      * @return état de la case. 0 si rien, 1 si bateau, 2 si touché
      */
-    public int getEtatPosition(int x, int y){
+    public static int getEtatPosition(int x, int y){
         return etatMer[x][y];
     }
 
