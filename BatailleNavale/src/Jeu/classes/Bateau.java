@@ -1,5 +1,5 @@
 /*
- * Bateau.java						7 mai 2019
+ * Bateau.java                        7 mai 2019
  * IUT info1 2018-2019 TD2, no copyright, no copyleft
  */
 package Jeu.classes;
@@ -10,41 +10,36 @@ package Jeu.classes;
  *
  */
 public class Bateau {
-    
-    /** Nom par défaut d'un bateau */
-    final private String NOM_DEFAUT = "Pirogue";
-    
-    /** Taille par défaut d'un bateau */
-    final private int TAILLE_DEFAUT = 1;
-    
+
     /** Nom identifiant le bateau pour le joueur */
     private String nom;
-    
+
     /** Taille d'un bateau en cases */
     private int taille;
-    
-    /** Sens d'un bateau : false -> vertical, true->horizontal */
+
+    /** Sens d'un bateau : 
+     * 0 = Est 
+     * 1 = Nord 
+     * 2 = Ouest 
+     * 3 = Sud
+     */
     private boolean sens;
-    
-    /** Etat de vie du bateau : 
-     *   - nb points max : longueur du bateau
-     *   - 0 si bateau coulé
-     */
-    private int etat;
-    
+
     /**
-     * Création d'un nouveau bateau en utilisant des valeurs par défaut
+     * Position de la prou du bateau qui permettra ensuite
+     * à partir de la taille et du sens de déterminé
+     * sa position sur la mer et la place occupée
      */
-    public Bateau() {
-        this.nom = NOM_DEFAUT;
-        this.taille = TAILLE_DEFAUT;
-        this.sens = false;
-        this.etat = TAILLE_DEFAUT;
-        this.positionX = 0;
-        this.positionY = 0;
-    }
-    
+    private Coordonnee prou;
+
     /**
+     * Nombre de case du bateau touché pour déterminer quand il doit couler
+     * - nb points max : longueur du bateau
+     * - 0 si bateau coulé
+     */
+    private int nbCaseTouche;
+
+     /**
      * Création d'un nouveau bateau en utilisant des valeurs définis lors de l'instanciation
      * @param nom appellation du bateai
      * @param taille nombre de cases occupée par ce bateau
@@ -52,91 +47,93 @@ public class Bateau {
     public Bateau(String nom, int taille) {
         this.nom = nom;
         this.taille = taille;
-        this.sens = false;
-        this.etat = taille;
-        this.positionX = 0;
-        this.positionY = 0;
     }
-    
+
     /**
-     * @return la valeur de  sens
+     * @return the sens
      */
     public boolean isSens() {
         return sens;
     }
-    
-    /** Position X du point de départ du positionnement du bateau*/
-    private int positionX;
-    
-    /** Position Y du point de départ du positionnement du bateau */
-    private int positionY;
 
     /**
-     * @param sens la nouvelle valeur de sens
+     * @param sens the sens to set
      */
     public void setSens(boolean sens) {
         this.sens = sens;
     }
 
     /**
-     * @return la valeur de  etat
+     * @return the prou
      */
-    public int getEtat() {
-        return etat;
+    public Coordonnee getProu() {
+        return prou;
     }
 
     /**
-     * @param etat la nouvelle valeur de etat
+     * @param prou the prou to set
      */
-    public void setEtat(int etat) {
-        this.etat = etat;
+    public void setProu(Coordonnee prou) {
+        this.prou = prou;
     }
 
     /**
-     * @return la valeur de  nom
+     * @return the nbCaseTouche
      */
-    public String getNom() {
-        return nom;
+    public int getNbCaseTouche() {
+        return nbCaseTouche;
     }
-
+    
     /**
-     * @return la valeur de  taille
-     */
-    public int getTaille() {
-        return taille;
-    }
+    * @param nbCaseTouche the nbCaseTouche to set
+    */
+   public void setNbCaseTouche(int nbCaseTouche) {
+       this.nbCaseTouche = nbCaseTouche;
+   }
 
-    /**
-     * @return la valeur de  positionX
-     */
-    public int getPositionX() {
-        return positionX;
-    }
+   /**
+    * @return the nom
+    */
+   public String getNom() {
+       return nom;
+   }
 
-    /**
-     * @return la valeur de  positionY
-     */
-    public int getPositionY() {
-        return positionY;
-    }
+   /**
+    * @return the taille
+    */
+   public int getTaille() {
+       return taille;
+   }
+   
+   /**
+    * Place le bateau sur la mer en lui attribuant : 
+    * - Une coordonnee pour la proue du bateau
+    * - Un sens 
+    * @param bateau bateau à placer sur la mer 
+    * @return true si le bateau à bien était placé 
+    *         false si le bateau n'a pas été placé
+    */
+   public boolean placer() {
+	   // TODO : Coder méthode placer 
+	   return true;
+   }
+   
+   /**
+	 * Détermine si un bateau a été coulé ou pas
+	 * @param bateau à tester
+	 * @return true si coulé, false si non coulé complètement
+	 */
+	public boolean estCoule() {
+		if (this.getTaille() == this.getNbCaseTouche()) {
+			return true;
+		}
+		return false;
+	}
 
-    /**
-     * @param positionX la nouvelle valeur de positionX
-     */
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
+   @Override
+   public String toString() {
+       return "Bateau [nom=" + nom + ", taille=" + taille + ", sens=" + sens + ", prou=" + prou + ", nbCaseTouche="
+               + nbCaseTouche + "]";
+   }
 
-    /**
-     * @param positionY la nouvelle valeur de positionY
-     */
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
-
-    @Override
-    public String toString() {
-        return "Bateau [nom=" + nom + ", taille=" + taille + ", sens=" + sens + ", etat=" + etat + ", positionX="
-                + positionX + ", positionY=" + positionY + "]";
-    }
 }

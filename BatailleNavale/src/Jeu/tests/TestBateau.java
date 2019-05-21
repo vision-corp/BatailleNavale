@@ -20,8 +20,6 @@ public class TestBateau {
     public static void main(String[] args) {
         Bateau b1 = new Bateau();
         System.out.println(b1.toString());
-        b1.setPositionX(8);
-        b1.setPositionY(13);
         System.out.println(b1.toString());
         
         Bateau b2 = new Bateau("Charles de Gaule", 4);

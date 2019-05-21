@@ -8,10 +8,14 @@ package Jeu;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.regex.*;
+import java.util.ArrayList;
 
 // Import de classe crée 
 import Jeu.classes.Mer;
 import Jeu.classes.Bateau;
+import Jeu.classes.Coup;
+import Jeu.classes.Coordonnee;
+import Jeu.classes.CoupJoue;
  
  /**
   * Jeu de la Bataille Navale qui se déroule sur un mer rectangulaire de n lignes
@@ -28,120 +32,6 @@ import Jeu.classes.Bateau;
   public class BatailleNavale {
 	  
 	  /**
-	   * méthode d'affichage de la mer adverse à l'écran 
-	   * @return aAfficher mer à afficher à l'écran 
-	   */
-	public static StringBuilder afficherMer(int[][] aConvertir) 
-	  throws IllegalArgumentException {
-		  
-		  // Alignement de la numérotation dès la création 
-		  StringBuilder aAfficher = new StringBuilder("");
-		  
-		  try {
-			  if (aConvertir[0].length > 26 || aConvertir[0].length <= 0) {
-				  throw new IllegalArgumentException();
-			  }
-			 
-			  int indice;
-
-			  aAfficher.append("    "); // Initialisation affichage 
-			  // Affichage des numérotation numérique pour les colonnes 
-			  for (indice = 1; indice < aConvertir.length+1; indice++) {
-				  if (indice >= 10) {
-					  aAfficher.append(indice + "  ");
-				  } else {
-					  aAfficher.append(indice + "   ");
-				  }
-			  }
-			  aAfficher.append("\n");
-
-			  /* Affichage de la mer avec à chaque début de ligne 
-			   * la numérotation alphabétique pour distinguer les lignes 
-			   */
-			  indice = 0;
-			  for (int[] ligne : aConvertir) {
-				  aAfficher.append("   ");
-				  for (int element : ligne) {
-					  aAfficher.append("----");
-				  }
-				  aAfficher.append("\n");
-
-				  /* Numérotation alphabétique en début de ligne */
-				  aAfficher.append(Character.toChars(indice+65));
-				  aAfficher.append("   ");
-				  indice++;
-
-				  for (int element : ligne) {
-					  aAfficher.append(element + " | ");
-				  }
-				  aAfficher.append("\n");
-
-			  }
-			  return aAfficher;
-		  } catch (IllegalArgumentException erreur) {
-			  return aAfficher;
-		  }
-		  
-		  
-	  }
-	  
-	  /**
-	   * méthode estValide qui vérifie si la saisie des coordoonées est correcte
-	   * et que les coordonnées existent 
-	   */
-	  public static boolean estValide(String aTester) {
-		  
-		    // Patterne des coordoonnées à saisir 
-		    Pattern patterneCoord = Pattern.compile("^[A-Z]\\p{Blank}(([0-9][0-9])|([0-9]))$"); // Patterne cchcc type regex pour verifier validité
-
-	        boolean resultat = false;           // vrai si la chaine est correcte
-	        Matcher matcherVal = patterneCoord.matcher(aTester);
-	        resultat = matcherVal.matches();
-	        
-	        return resultat;
-	  }
-	  
-	  /**
-	   * méthode qui convertie les coordonnées en données exploitable
-	   */
-	  public static int[] convertion(String aConvertir) {
-		  
-		  // tableau qui contiendra les valeurs exploitable
-		  int[] coordChiffre = new int[2];
-		  
-		  char lettre; 
-		  
-		  // Récupère les 2 parties de la chaine 
-		  StringTokenizer aTraduire = new StringTokenizer(aConvertir);
-		  
-		  lettre = aTraduire.nextToken().charAt(0);
-		  
-		  coordChiffre[0] = Character.getNumericValue(lettre) - 10;
-		  coordChiffre[1] = Integer.parseInt(aTraduire.nextToken()) - 1;
-		  return coordChiffre;
-	  }
-	  
-	  /**
-	   * méthode estOccupe qui détermine si les coordonnées saisie contiennent un bateau 
-	   */
-	  public static boolean estOccupe(int[] aTester) {
-		  if (Mer.getEtatPosition(aTester[0], aTester[1]) == 0) {
-			  return false;
-		 } else {
-			 return true;
-		 }
-		  //miseAJourDonnee(aTester);
-	  }   
-	  
-	  /**
-	   * méthode qui met à jour toutes les données découlant de l'action du joueur
-	   * si ce dernier à toucher ou couler un bateau 
-	   */
-	   public static void miseAJourDonnee(int[] coordonnees) {
-		   // TODO : Coder fonction
-	   }
-	  
-	  /**
 	   * Disposition des Bateaux aléatoirement par le jeu puis déroulement d'une partie
 	   * L'odinateur demande une position à attaquer, le joueur la saisie 
 	   * (Vérification si correcte)
@@ -154,11 +44,15 @@ import Jeu.classes.Bateau;
 		  
 		  Scanner entree = new Scanner(System.in);
 		  
-		  int[][] etatMerOrdinateur; // etat de la mer de l'ordinateur
 		  int numCoup;               // numéro du coup joué
 		  
 		  String coordSaisie;        // Coordonnées saisie par le joueur 
 		  
+		  boolean fin,               // Permet de savoir quand il y a plus de bateau sur la mer
+		          valide;            // Evite de refaire appel deux fois à la méthode estValide
+		  int etatCoup;              // Etat du coup joué par le joueur (Touché, plouf... )
+		  
+		  fin = true;  //Initalisation dès le début pour gain de performance
 		  /* Règle du jeu de la bataille navale */
 		  final String regle = 
 				  "Le jeu de la bataille navale se joue sur une \" mer \" rectangulaire "
@@ -183,7 +77,7 @@ import Jeu.classes.Bateau;
 		  
 		   /* Initialisation de la Mer et des bateaux */
 		   /** Mer contenant les bateaux */
-	        Mer mer = new Mer(12, 12);
+	        Mer merOrdinateur = new Mer(12, 12);
 
 	        /** Création des 4 bateaux constituant la flotte placée sur la mer */
 	        Bateau b1 = new Bateau("Porte Avions", 4);
@@ -197,23 +91,26 @@ import Jeu.classes.Bateau;
 	        Bateau b9 = new Bateau("Vedette", 1);
 	        Bateau b10 = new Bateau("Vedette", 1);
 
-	        /** Ajout des bateaux à la mer*/
-	        mer.ajouterBateau(b1);
-	        mer.ajouterBateau(b2);
-	        mer.ajouterBateau(b3);
-	        mer.ajouterBateau(b4);
-	        mer.ajouterBateau(b5);
-	        mer.ajouterBateau(b6);
-	        mer.ajouterBateau(b7);
-	        mer.ajouterBateau(b8);
-	        mer.ajouterBateau(b9);
-	        mer.ajouterBateau(b10);
-//		  
-//		  /* Ajout des bateaux crées à la mer de l'ordinateur */
-//		  
-//		  /* Disposition aléatoire des bateaux */
-//		  Mer.genererFlotte(merOrdinateur);
-		  //TODO : Coder méthode
+	        /* Ajout des bateaux crées à la mer de l'ordinateur */
+	        merOrdinateur.ajouterBateau(b1);
+	        merOrdinateur.ajouterBateau(b2);
+	        merOrdinateur.ajouterBateau(b3);
+	        merOrdinateur.ajouterBateau(b4);
+	        merOrdinateur.ajouterBateau(b5);
+	        merOrdinateur.ajouterBateau(b6);
+	        merOrdinateur.ajouterBateau(b7);
+	        merOrdinateur.ajouterBateau(b8);
+	        merOrdinateur.ajouterBateau(b9);
+	        merOrdinateur.ajouterBateau(b10);
+	        
+	        /* Placement des bateau via backtracking */
+	        merOrdinateur.placerBateaux();
+	        
+	        /* objet qui stockera les coups joué pour sauvegarde */
+	        CoupJoue coupJoueur = new CoupJoue();
+	        
+	        /* objet qui stocke de manière temporaire les coordonnees saisie */
+	        Coordonnee saisieJoueur = new Coordonnee();
 		  
 		  System.out.println("Appuyez sur entree continuer...");
 		  entree.nextLine();
@@ -229,45 +126,75 @@ import Jeu.classes.Bateau;
 		  		             + "3 batiments de type sous-marin de taille 2\n"
 		  		             + "4 batiments de type vedette de taille 1\n"); 
 		  
+		  
 		  System.out.println("Appuyez sur entree pour commencer une partie...");
 		  entree.nextLine();
-		  
-		  /* Affichage des informations de la partie */
-		  //etatMerOrdinateur = Mer.getEtatMer(); // On récupère l'état de la mer
-		  etatMerOrdinateur = new int[12][12]; // stub
 		  
 		  /* Affichage de la mer :
 	       * Les cases inconnu sont symbolisé par ‘.’ ‘ ’ ‘~’
 	       * Les cases “touchées” par ‘x’ ‘!’
 	       * Les cases plouf sont symbolisée par ‘O’
 	       */ 
-		  System.out.println(afficherMer(etatMerOrdinateur));
+		  System.out.println(merOrdinateur.toString(coupJoueur));
 		  
-		  
-		  /* Attends d'une action du joueur */
-		  numCoup = 0;
+		  numCoup = 1;
 		  System.out.println("Début du jeu");
-		  do {
-			  System.out.print("Coup " + numCoup + " >");
-			  coordSaisie = entree.next() + entree.nextLine();
+		  /* Boucle tant que des bateaux sont encores sur la mer 
+		   * While utilisé pour ne rien faire si les bateaux
+		   * n'ont pas pu être placé  
+		   */
+		  while (fin) {
+			  do {
+				  System.out.print("Coup " + numCoup + " >");
+				  coordSaisie = entree.next() + entree.nextLine();
+				  valide = (Coup.estValide(coordSaisie, merOrdinateur.getLargeur(),
+						  merOrdinateur.getLongueur()));
+				  
+				  // Vérifie si saisie correcte
+				  // TODO : déplacer estValide dans Coup 
+				  if (!valide) {
+					  System.out.println("Coordonnées saisies incorrectes réessayer"
+							             + " Ex : A 3, C 12, D 1..."); 
+				  } else {
+					  /* Attribution temporaire des coordonnees à l'objet */
+					  saisieJoueur = new Coordonnee(Coup.convertion(coordSaisie));
+					  /* Sauvegarde du coup joué pour la fonction sauvegarde */
+					  coupJoueur.addCoup(new Coordonnee(Coup.convertion(coordSaisie)));
+					  numCoup++;
+				  }
+			  } while (!valide);
 			  
-			  // Vérifie si saisie correcte
-			  if (!estValide(coordSaisie)) {
-				  System.out.println("Coordonnées saisies incorrectes réessayer"
-						             + " Ex : A 3, C 12, D 1..."); 
+			  /* Vérification si bateau aux coordoonées saisie */
+			  // TODO : chercherBateau 
+			  // TODO : Si valeur renvoyée est null alors "plouf" ! 
+			  // TODO : Si nbCaseTouchees == taille
+			  // TODO : Si touché coulé vérifier taille de la List, et si vide partie finie !
+			  
+			 if(merOrdinateur.trouverBateau(saisieJoueur) == null) {
+				  System.out.println("plouf !");
+			  } else {
+				  if(merOrdinateur.trouverBateau(saisieJoueur).estCoule()) {
+					  System.out.println("Touché coulé !");
+				  } else {
+					  System.out.println("Touché !");
+				  }
+				  
 			  }
-		  } while (!estValide(coordSaisie));
+			  
+			  System.out.println(merOrdinateur.toString(coupJoueur));
+			  /* Si liste de bateau de l'objet mer vide
+			   * Tous les bateaux sont coulés donc partie fini 
+			   */
+			  if(merOrdinateur.getBateaux().size() == 0) {
+				  fin = true;
+			  }
+		  };
 		  
-		  /* Vérification si bateau aux coordoonées saisie */
-		  estOccupe(convertion(coordSaisie));
-		  
-		  
-		  /* Boucle tant que des bateaux sont encores sur la mer */
-		  
-
-		      /* Saisie coordoonnées par joueur */
-		      /* Vérification si touché, coulé ou "Coup à l'eau" */
+		  System.out.println("FELICITATION VOUS AVEZ DEFAIT BATAILLONAVALO");
 		  
 	  }
-  
-  }
+}
+	  
+		  
+		  
+		  

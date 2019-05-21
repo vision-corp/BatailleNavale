@@ -1,11 +1,13 @@
 /*
- * Flotte.java						8 mai 2019
+ * Mer.java                        8 mai 2019
  * IUT info1 2018-2019 TD2, no copyright, no copyleft
  */
 package Jeu.classes;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration; 
 
 /**
  * Ensemble de bateaux constituant tous les navires d'un joueur
@@ -16,7 +18,7 @@ public class Mer {
     /** Longueur par défaut d'une mer instanciée sans paramètres */
     final private int LONGUEUR_DEFAULT = 12;
 
-    /** Largeur par défaut d'une mer instanciée sans paramètres */
+    /** Largeur par défaut d'une mer instanciée sans paramétres */
     final private int LARGEUR_DEFAULT = 12;
 
     /** Longueur de la mer en cases */
@@ -25,61 +27,33 @@ public class Mer {
     /** Largeur de la mer en cases */
     private int largeur;
 
-    /** Position des bateaux sur la mer */
-    private static int[][] etatMer;
-
-    /** Ensemble des bateaux contenus dans la mer */
+    /** Ensemble des bateaux contenus dans la mer classé par taille decroissante 
+     * Exemple : Taille 4 puis Taille 3 puis Taille 2...*/
     List<Bateau> bateaux = new ArrayList<>();
 
     /**
-     * Instanciation d'une mer sans arguments, avec valeurs par défaut
+     * Objet contenant taille de la mer et sa référence
      */
     public Mer() {
         this.longueur = LONGUEUR_DEFAULT;
         this.largeur = LARGEUR_DEFAULT;
-        this.etatMer = new int[LONGUEUR_DEFAULT][LARGEUR_DEFAULT];
     }
 
     /**
-     * Instanciation d'une mer sans arguments, avec valeurs par défaut
      * @param longueur de la mer
      * @param largeur de la mer
      */
     public Mer(int longueur, int largeur) {
         this.longueur = longueur;
         this.largeur = largeur;
-        this.etatMer = new int[LONGUEUR_DEFAULT][LARGEUR_DEFAULT];
-    }
-
-    /**
-     * @return la valeur de  etatMer
-     */
-    public int[][] getEtatMer() {
-        return etatMer;
-    }
-
-    /**
-     * TODO commenter le role et les attributs
-     * @param x position en absisse du point cherché
-     * @param y position en ordonnée du point cherché
-     * @return état de la case. 0 si rien, 1 si bateau, 2 si touché
-     */
-    public static int getEtatPosition(int x, int y){
-        return etatMer[x][y];
-    }
-
-    /**
-     * @param etatMer la nouvelle valeur de etatMer
-     */
-    public void setEtatMer(int[][] etatMer) {
-        this.etatMer = etatMer;
     }
 
     /**
      * @return la valeur de  longueur
      */
-    public int getLongueur() {
-        return longueur;
+    public int[] getTaille() {
+        int[] sumTaille = {this.longueur, this.largeur};
+        return sumTaille;
     }
 
     /**
@@ -88,74 +62,161 @@ public class Mer {
     public int getLargeur() {
         return largeur;
     }
+    
+    /**
+     * @return la valeur de longueur
+     */
+    public int getLongueur() {
+    	return longueur;
+    }
 
     /**
-     * @return la valeur de  bateaux
+     * @return the bateaux
      */
     public List<Bateau> getBateaux() {
         return bateaux;
     }
 
-    @Override
-    public String toString() {
-        return "Mer [longueur=" + longueur + ", largeur=" + largeur + ", etatMer=" + etatMer + ", bateaux=" + bateaux
-                + "]";
-    }
-
-    /**
-     * Ajout d'un bateau existant à la mer
-     * @param bateau à ajouter
-     */
+    /** Ajout d'un bateau dans la mer */
     public void ajouterBateau(Bateau bateau) {
-        bateaux.add(bateau);
+        this.bateaux.add(bateau);
     }
+
+    /** Suppression d'un bateau de la mer */
+    public void supprimerBatteau(Bateau bateau) {
+        this.bateaux.remove(bateau);
+    }
+    
+    /**
+     * méthode d'affichage de la mer à l'écran 
+     * @return aAfficher chaine de carcactère mer à afficher à l'écran 
+     */
+    public String toString(CoupJoue coup) {
+
+    	StringBuilder aAfficher = new StringBuilder("");
+    	
+    	int indice,          // Indice de la colonne ou ligne à parcourir
+    	    noColonne;  // Taille de la colonne ou ligne à parcourir
+    	
+    	int longueur = this.getLongueur(), // Longueur de la mer 
+            largeur = this.getLargeur();   // Largeur de la mer
+    	
+    	char noLigne;        // Numéro de la ligne à afficher
+    	
+
+    	try {
+    		if (longueur > 26 || largeur > 26 || longueur < 0 || largeur < 0) {
+    			throw new IllegalArgumentException();
+    		}
+
+    		// Initialisation affichage (Alignement numérotation)
+    		aAfficher.append("    "); 
+    		// Affichage des numérotation numérique pour les colonnes 
+    		for (indice = 1; indice <= longueur; indice++) {
+    			if (indice >= 10) {
+    				aAfficher.append(indice + "  ");
+    			} else {
+    				aAfficher.append(indice + "   ");
+    			}
+    		}
+    		aAfficher.append("\n");
+
+    		/* Affichage de la mer avec en chaque début de ligne 
+    		 * la numérotation alphabétique pour distinguer les lignes 
+    		 */
+    		noLigne = 'A';
+    		for (indice = 1; indice <= largeur; indice++, noLigne++) {
+    			aAfficher.append("   ");
+    			for (noColonne = 1; noColonne <= longueur;
+    				 noColonne++) {
+        			aAfficher.append("----");
+    			}
+    			aAfficher.append("\n");
+    			aAfficher.append(noLigne);
+    			aAfficher.append("    ");
+    			for (noColonne = 1; noColonne <= longueur;
+       				 noColonne++) { 
+    				aAfficher.append(" | " + etatCase(coup, noLigne, noColonne));
+    			}
+    			aAfficher.append("\n");
+    		}
+
+    		return aAfficher.toString();
+    	} catch (IllegalArgumentException erreur) {
+    		// Taille dépassant le nombre de lettre de l'alphabet 
+    		return aAfficher.toString();
+    	}
+
+    }   	
 
     /**
-     * Place les bateaux dans la mer. Tous lesbateaux doivent être espacés d'au minimum une case
-     * pour que le placement soit valide, sinon on essai un autre placement jusqu'à en trouver
-     * un correct.
-     * @return indicateur de placement : true -> réussi, flase -> échoué
+     * Permet de définir l'état de la case à afficher 
+     * @param coup objets contenant les coups joués par le joueur
+     * @param noLigne caractère saisie par l'utilisateur
+     * @param noColonne numéro saisie par l'utilisateur
+     * @return " " : Si coordonnées pas encore jouée
+     *         aAfficher : "~" si c'est de l'eau
+     *                   : "*" si bateau touché
+     *                   : "o" si bateau coulé  
      */
-    public boolean placerBateaux(){
-        int nbEssais = 0;
-        for(Bateau bat : bateaux) { 
-            boolean ok = true;
-            while (ok && nbEssais < 30) {
-                /* Choix aléatoire de points */
-                int posX = (int)(Math.random() * 12);
-                int posY = (int)(Math.random() * 12);
-
-                /* Vérifie si le bateau rentre en longueur en tenant compte des bateaux déjà placés */
-                if (this.getLongueur() - (posX + bat.getTaille()) > 0) {
-                    // teste si les cases sont occupées
-                    for (int i = 0; i < getLongueur(); i++) {
-                        ok = ok && getEtatPosition(posX + i, posY) == 0;
-                    }
-                }
-
-                /* Changement de sens si le bateau ne rentre pas dans la configuration précédente */
-                if(!ok) {
-                    bat.setSens(true);
-                }
-
-                /* Vérifie si le bateau rentre en hauteur en tenant compte des bateaux déjà placés*/
-                if (!ok && getLargeur() - (posY + bat.getTaille()) > 0) {
-                    // teste si les cases sont occupées
-                    for (int i = 0; i < getLargeur(); i++) {
-                        ok = ok && getEtatPosition(posX, posY + i) == 0;
-                    }
-                }
-                nbEssais++;
-                if (ok) {
-                    nbEssais = 0;
-                    return true;
-                }
-            }
-            
-            //TODO vérifications effectuées précédament,reste juste à placer les bateaux dans la grille
-        }
-        return false;
-        
-        
+    public String etatCase(CoupJoue coup, char noLigne, int noColonne) {
+    	
+    	/** Liste des coordonnees saisies lors de la partie 
+    	 * du plus ancien au plus recent 
+    	 */
+    	List<Coordonnee> coordSaisie = coup.getCoordSaisie();
+    	Bateau tempBat; // Bateau temporaire
+    	
+    	String aAfficher = ""; 
+    	
+    	if (!coordSaisie.contains(new Coordonnee(noColonne, noLigne))) {
+    		// permet de quitter prématurement la fonction si le coup n'a pas 
+    		// encore était joué 
+    		return " ";
+    	}
+    	
+    	for (int indice = 0; indice < coordSaisie.size(); indice++) {
+    		tempBat = this.trouverBateau(coordSaisie.get(indice));
+    		if (tempBat == null) {
+    			aAfficher = "~";
+    		} else {
+    			if(tempBat.estCoule()) {
+					  aAfficher = "o";
+				  } else {
+					  aAfficher = "*";
+				  }
+    		}
+    	}
+    	return aAfficher;
     }
+    
+    /**
+     * Place les bateaux de la liste bateaux sur la mer cible
+     * Gère les erreurs de placements et lors de la sortie de 
+     * cette méthode tous les bateaux sont placé si il existe bien un possibilité
+     * de les placer 
+     */
+    public void placerBateaux() {
+    	// TODO Coder méthode 
+    	boolean ok;  // Détermine si le placement unique à réussi 
+    	List<Bateau> listeBateaux = getBateaux();
+    	
+    	// Envoyer Bateau à placer 
+    }
+    
+    /**
+	 * Regarde si un bateau est placé sur une coordonnée donnée
+	 * @param coordonnee à comparer
+	 * @return bateau placé à cette coordonnée. Renvoi null si aucun bateau trouvé.
+	 */
+	public Bateau trouverBateau(Coordonnee coordonnee) {
+		for (Bateau b : bateaux) {
+			if (b.getProu() == coordonnee) {
+				return b;
+			}
+		}
+		return null;
+	}
+
+
 }

@@ -280,30 +280,7 @@ public class TestBatailleNavale {
 				 + "Z   0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |"
 				    + " 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | \n",		
 		};
-		
-		/**
-		 * jeux de tests pour la méthode estValide
-		 */
-		private static String[] jeuEstValide = {"", " ", "JJ", "E ", " T", "A 12", "B 58", "2 B", "E5","E 5", "    ", "AB 2", "ER 25"};
-		private static boolean[] repJeuEstValide = {false, false, false, false, false, true, true, false, false, true, false, false, false};
-		
-		/**
-		 * Jeux de tests pour la méthode convertion
-		 */
-		private static String[] JEU_CONVERTION = {"A 1", "B 4", "J 19", "P 10", "O 25", "Z 26"};
-		private static int[][] REP_JEU_CONVERTION = {
-				{0, 0},
-				{1, 3},
-				{9, 18},
-				{15, 9},
-				{14, 24},
-				{25, 25}
-		};
-		
-		/**
-		 * Jeux de tests pour la méthode estOccupe
-		 */
-		
+			
 	    /**
 		 * méthode de test pour afficherMer
 		 */
@@ -340,62 +317,9 @@ public class TestBatailleNavale {
 	    }
 	    
 	    /**
-	     * Test automatique de la méthode estValide()
-	     */
-	    public static void testEstValide() {
-	    	int testOk = 0;
-	    	int testNok = 0;
-	    	
-	    	for (int i = 0; i < jeuEstValide.length; i++) {
-	    		if (BatailleNavale.estValide(jeuEstValide[i]) == repJeuEstValide[i]) {
-	    			testOk++;
-	    		} else {
-	    			testNok++;
-	    		}
-	    	}
-	    	System.out.println("=====================================================\n"
-			           + "Test automatique de la méthode estValide\n"
-			           + "=====================================================\n");
-	    	if (testNok == 0) {
-	    		System.out.println("Tous les tests sont OK !");
-	    	} else {
-	    		System.out.println("==> " + testOk + "ont réussi\n"
-	    							+ "==> " + testNok + "ont échoués.");
-	    	}
-	    }
-	    
-	    /**
-	     * Test automatique de la méthode convertion()
-	     */
-	    public static void testConvertion() {
-	    	int testOk = 0;
-	    	int testNok = 0;
-	    	
-	    	for (int i = 0; i < JEU_CONVERTION.length; i++) {
-	    		if (BatailleNavale.convertion(JEU_CONVERTION[i])[0] == REP_JEU_CONVERTION[i][0]
-	    		 && BatailleNavale.convertion(JEU_CONVERTION[i])[1] == REP_JEU_CONVERTION[i][1]) {
-	    			testOk++;
-	    		} else {
-	    			testNok++;
-	    		}
-	    	}
-	    	System.out.println("=====================================================\n"
-			           + "Test automatique de la méthode convertion\n"
-			           + "=====================================================\n");
-	    	if (testNok == 0) {
-	    		System.out.println("Tous les tests sont OK !");
-	    	} else {
-	    		System.out.println("==> " + testOk + "ont réussi\n"
-	    							+ "==> " + testNok + "ont échoués.");
-	    	}
-	    }
-	    
-	    /**
 		 * Fonction main qui lance les méthode de tests
 		 */
 		public static void main(String[] args) {
-			//testAfficherMer();
-			//testEstValide();
-			testConvertion();
+			testAfficherMer();
 	    }
 }
