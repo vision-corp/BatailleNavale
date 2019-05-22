@@ -23,7 +23,7 @@ public class Bateau {
      * 2 = Ouest 
      * 3 = Sud
      */
-    private boolean sens;
+    private int sens;
 
     /**
      * Position de la prou du bateau qui permettra ensuite
@@ -52,14 +52,14 @@ public class Bateau {
     /**
      * @return the sens
      */
-    public boolean isSens() {
+    public int getSens() {
         return sens;
     }
 
     /**
      * @param sens the sens to set
      */
-    public void setSens(boolean sens) {
+    public void setSens(int sens) {
         this.sens = sens;
     }
 
@@ -115,6 +115,11 @@ public class Bateau {
     */
    public boolean placer() {
 	   // TODO : Coder méthode placer 
+	   for (int indice = 0; indice < 3; indice++) {
+		   for (int parcours = 0; parcours < taille+2; parcours++) {
+			   
+		   }
+	   }
 	   return true;
    }
    

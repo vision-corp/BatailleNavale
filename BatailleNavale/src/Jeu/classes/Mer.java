@@ -6,8 +6,6 @@ package Jeu.classes;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration; 
 
 /**
  * Ensemble de bateaux constituant tous les navires d'un joueur
@@ -133,7 +131,7 @@ public class Mer {
     			}
     			aAfficher.append("\n");
     			aAfficher.append(noLigne);
-    			aAfficher.append("    ");
+    			aAfficher.append(" ");
     			for (noColonne = 1; noColonne <= longueur;
        				 noColonne++) { 
     				aAfficher.append(" | " + etatCase(coup, noLigne, noColonne));
@@ -161,31 +159,24 @@ public class Mer {
      */
     public String etatCase(CoupJoue coup, char noLigne, int noColonne) {
     	
-    	/** Liste des coordonnees saisies lors de la partie 
-    	 * du plus ancien au plus recent 
-    	 */
-    	List<Coordonnee> coordSaisie = coup.getCoordSaisie();
     	Bateau tempBat; // Bateau temporaire
     	
-    	String aAfficher = ""; 
+    	Coordonnee coord = new Coordonnee(noColonne, noLigne);
+    	String aAfficher = " "; 
     	
-    	if (!coordSaisie.contains(new Coordonnee(noColonne, noLigne))) {
-    		// permet de quitter prématurement la fonction si le coup n'a pas 
-    		// encore était joué 
-    		return " ";
-    	}
-    	
-    	for (int indice = 0; indice < coordSaisie.size(); indice++) {
-    		tempBat = this.trouverBateau(coordSaisie.get(indice));
-    		if (tempBat == null) {
-    			aAfficher = "~";
-    		} else {
-    			if(tempBat.estCoule()) {
-					  aAfficher = "o";
-				  } else {
-					  aAfficher = "*";
-				  }
-    		}
+    	/* Vérification si les coordonnées ont été joué */
+    	if (coup.estJoue(coord)) {
+    		tempBat = this.trouverBateau(coord);
+    		/* Réaction en fonction de si un bateau à était trouvé */
+	    	if (tempBat == null) {
+	    	    aAfficher = "~";
+	    	} else {
+	        	if(tempBat.estCoule()) {
+				    aAfficher = "o";
+			    } else {
+				    aAfficher = "*";
+			    }
+	    	}
     	}
     	return aAfficher;
     }
@@ -197,11 +188,20 @@ public class Mer {
      * de les placer 
      */
     public void placerBateaux() {
-    	// TODO Coder méthode 
+    	/*// TODO Coder méthode 
     	boolean ok;  // Détermine si le placement unique à réussi 
     	List<Bateau> listeBateaux = getBateaux();
     	
-    	// Envoyer Bateau à placer 
+    	// Envoyer Bateau à placer */
+    	Bateau bat;
+    	
+    		bat = bateaux.get(1);
+    		bat.setSens(1);
+    		bat.setProu(new Coordonnee(1, 'A'));
+    		
+    		bat = bateaux.get(2);
+    		bat.setSens(1);
+    
     }
     
     /**

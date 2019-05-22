@@ -32,8 +32,30 @@ public class CoupJoue {
 		this.coordSaisie.add(coordonnees);
 	}
 	
+	/**
+	 * Récupérer les coordonnee joué de l'objet 
+	 * @return coordSaisie Liste des couos joués du type 
+	 */
 	public List<Coordonnee> getCoordSaisie() {
 		return coordSaisie;
+	}
+	
+	/**
+	 * Détermine si une coordonnee founie à était joué 
+	 * @param coord coordonnee à comparer 
+	 * @return joue true si la coordonnee à était joué
+	 *              flase si elle n'a pas était joué
+	 */
+	public boolean estJoue(Coordonnee coord) {    	
+    	boolean joue = false; // Valide si la coordonnée à était joué
+    	
+    	for (Coordonnee element : this.coordSaisie) {
+    		if (element.getPosX() == coord.getPosX()
+    				&& element.getPosY() == coord.getPosY()) {
+    			joue = true;
+    		}
+    	}
+		return joue;
 	}
 	
 	

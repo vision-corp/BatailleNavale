@@ -13,15 +13,6 @@ import java.util.Scanner;
  * @author onsenfou
  */
 public class Coup {
-	
-	/** Commande pour quitter la partie */
-	final private String cmdQuitter = "quitter";
-
-	/** Commande pour afficher l'aide */
-	final private String cmdAide = "aide";
-
-	/** Commande pour sauvegarder la partie */
-	final private String cmdSauv = "sauvegarder";
 
 	/** Analyseur lexical de l'entrée standard */
 	Scanner entree = new Scanner(System.in);
@@ -29,34 +20,9 @@ public class Coup {
 	/** Valeur non convetie entrée par l'utilisateur */
 	private String valeurEntree;
 	
-	/*
-	 * Permet à l'utilisateur d'entrer les coordonnées d'une case en gérent les erreurs.
-	 
-	// TODO ajouter la méthodes estValide()
-	public void saisirCoordonnee() {
-		String saisie;
-		boolean ok;
-		ok = false;
-		do {
-			System.out.println("Sur quelle case voulez-vous tirer ?");
-			saisie = entree.nextLine();
-			if (saisie.equals(cmdAide)) {
-				ok = true;
-				
-			} else if (saisie.equals(cmdQuitter)) {
-				ok = true;
-				
-			} else if (saisie.equals(cmdSauv)) {
-				ok = true;
-				
-			} else if (estValide(saisie, )){
-				ok = true;
-				
-			} else {
-				System.out.println("Veuillez entrer une coordonnée valide (ex : D9).\n");
-			}
-		}while (!ok);
-	} */
+	public Coup(String valeurEntree) {
+		this.valeurEntree = valeurEntree;
+	}
 	
 	/**
 	 * Détermine si le coup joué par l'utilisateur est valide 
@@ -67,12 +33,12 @@ public class Coup {
 	 * @return valide : true si valide
 	 *                  false si faux
 	 */
-	public static boolean estValide(String aTester, int largeurMer, int longueurMer) {
+	public boolean estValide(String aTester, int largeurMer, int longueurMer) {
 		boolean valide;
 		int[] coordConvertie;
 		
 		valide = false;
-		if (!(aTester.length() > 3)) {
+		if (!(aTester.length() <= 1 || aTester.length() > 3 )) {
 			coordConvertie = convertion(aTester);
  
 			/* test si l'axe des ordonnées saisie est correcte */
@@ -88,7 +54,7 @@ public class Coup {
 	 * Convertie une chaine contenant des coordoonées, en coordonnes exploitable
 	 * @return convertie tableau de 2 éléments (ordonnée, abscisse) exploitable
 	 */
-	public static int[] convertion(String aConvertir) {
+	public int[] convertion(String aConvertir) {
 		int[] convertie = new int[2];
 		
 		/* On récupère la valeur de l'ordonnée */
@@ -97,7 +63,7 @@ public class Coup {
 		
 		return convertie;
 	}
-	 
+
 	/**
 	 * @return the valeurEntree
 	 */

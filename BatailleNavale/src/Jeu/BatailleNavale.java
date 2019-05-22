@@ -6,9 +6,6 @@
 package Jeu;
 
 import java.util.Scanner;
-import java.util.StringTokenizer;
-import java.util.regex.*;
-import java.util.ArrayList;
 
 // Import de classe crée 
 import Jeu.classes.Mer;
@@ -50,7 +47,6 @@ import Jeu.classes.CoupJoue;
 		  
 		  boolean fin,               // Permet de savoir quand il y a plus de bateau sur la mer
 		          valide;            // Evite de refaire appel deux fois à la méthode estValide
-		  int etatCoup;              // Etat du coup joué par le joueur (Touché, plouf... )
 		  
 		  fin = true;  //Initalisation dès le début pour gain de performance
 		  /* Règle du jeu de la bataille navale */
@@ -107,7 +103,7 @@ import Jeu.classes.CoupJoue;
 	        merOrdinateur.placerBateaux();
 	        
 	        /* objet qui stockera les coups joué pour sauvegarde */
-	        CoupJoue coupJoueur = new CoupJoue();
+	        CoupJoue coupJoueJoueur = new CoupJoue();
 	        
 	        /* objet qui stocke de manière temporaire les coordonnees saisie */
 	        Coordonnee saisieJoueur = new Coordonnee();
@@ -135,7 +131,7 @@ import Jeu.classes.CoupJoue;
 	       * Les cases “touchées” par ‘x’ ‘!’
 	       * Les cases plouf sont symbolisée par ‘O’
 	       */ 
-		  System.out.println(merOrdinateur.toString(coupJoueur));
+		  System.out.println(merOrdinateur.toString(coupJoueJoueur));
 		  
 		  numCoup = 1;
 		  System.out.println("Début du jeu");
@@ -145,21 +141,22 @@ import Jeu.classes.CoupJoue;
 		   */
 		  while (fin) {
 			  do {
-				  System.out.print("Coup " + numCoup + " >");
+				  System.out.print("Coup " + numCoup + " > ");
 				  coordSaisie = entree.next() + entree.nextLine();
-				  valide = (Coup.estValide(coordSaisie, merOrdinateur.getLargeur(),
+				  Coup coupJoueur = new Coup(coordSaisie);
+				  valide = (coupJoueur.estValide(coordSaisie, merOrdinateur.getLargeur(),
 						  merOrdinateur.getLongueur()));
 				  
 				  // Vérifie si saisie correcte
 				  // TODO : déplacer estValide dans Coup 
 				  if (!valide) {
 					  System.out.println("Coordonnées saisies incorrectes réessayer"
-							             + " Ex : A 3, C 12, D 1..."); 
+							             + " Ex : A3, C12, D1..."); 
 				  } else {
 					  /* Attribution temporaire des coordonnees à l'objet */
-					  saisieJoueur = new Coordonnee(Coup.convertion(coordSaisie));
+					  saisieJoueur = new Coordonnee(coupJoueur.convertion(coordSaisie));
 					  /* Sauvegarde du coup joué pour la fonction sauvegarde */
-					  coupJoueur.addCoup(new Coordonnee(Coup.convertion(coordSaisie)));
+					  coupJoueJoueur.addCoup(new Coordonnee(coupJoueur.convertion(coordSaisie)));
 					  numCoup++;
 				  }
 			  } while (!valide);
@@ -169,7 +166,6 @@ import Jeu.classes.CoupJoue;
 			  // TODO : Si valeur renvoyée est null alors "plouf" ! 
 			  // TODO : Si nbCaseTouchees == taille
 			  // TODO : Si touché coulé vérifier taille de la List, et si vide partie finie !
-			  
 			 if(merOrdinateur.trouverBateau(saisieJoueur) == null) {
 				  System.out.println("plouf !");
 			  } else {
@@ -181,7 +177,7 @@ import Jeu.classes.CoupJoue;
 				  
 			  }
 			  
-			  System.out.println(merOrdinateur.toString(coupJoueur));
+			  System.out.println(merOrdinateur.toString(coupJoueJoueur));
 			  /* Si liste de bateau de l'objet mer vide
 			   * Tous les bateaux sont coulés donc partie fini 
 			   */
@@ -189,6 +185,9 @@ import Jeu.classes.CoupJoue;
 				  fin = true;
 			  }
 		  };
+		  
+		  // Fermeture du scanner entree 
+		  entree.close();
 		  
 		  System.out.println("FELICITATION VOUS AVEZ DEFAIT BATAILLONAVALO");
 		  
