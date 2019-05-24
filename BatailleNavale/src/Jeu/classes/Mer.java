@@ -189,8 +189,8 @@ public class Mer {
     /**
      * Place les bateaux de la liste bateaux sur la mer cible
      * Gère les erreurs de placements et lors de la sortie de 
-     * cette méthode tous les bateaux sont placé si il existe bien un possibilité
-     * de les placer 
+     * cette méthode tous les bateaux sont placé si il existe 
+     * bien un possibilité de les placer 
      */
     public void placerBateaux() {
     	/*// TODO Coder méthode 
@@ -210,18 +210,74 @@ public class Mer {
     }
     
     /**
-	 * Regarde si un bateau est placé sur une coordonnée donnée
-	 * @param coordonnee à comparer
-	 * @return bateau placé à cette coordonnée. Renvoi null si aucun bateau trouvé.
-	 */
-	public Bateau trouverBateau(Coordonnee coordonnee) {
-		for (Bateau b : bateaux) {
-			if (b.getProu() == coordonnee) {
-				return b;
-			}
-		}
-		return null;
-	}
-
+     * Regarde si un bateau est placé sur une coordonnée donnée
+     * Regarde la proue :
+     *              - si sens = 1 : regarde vers le nord
+     *              - si sens = 0 : regarde vers l'est
+     *              - si sens = 3 : regarde vers le sud
+     *              - si sens = 2 : regarde vers l'ouest
+     * Chaque point d'un bateau est testé (nb points à tester = longeur du bateau)
+     * @param coordonnee à comparer
+     * @return bateau placé à cette coordonnée. Renvoi null si aucun bateau trouvé.
+     */
+    public Bateau trouverBateau(Coordonnee coordonnee) {
+            // Indicateur de prédence d'un bateau à la coordonnée donnée
+            boolean ok;
+            
+            // ok pas à true si bateau trouvé à la coordonnée à comparer
+            ok = false;
+            for (Bateau b : bateaux) {
+                    ok = false;
+                    
+                    
+                    if (b.getProu() == coordonnee) { 
+                            ok = true;
+                    } else {
+                            
+                            // Balayage de touts les points en fonction de la taille du bateau
+                            for(int i = b.getTaille(); i > 1; i--) {
+                                    
+                                    // balaygae adapté en fonction de l'orientation du bateau
+                                    switch (b.getSens()) {
+                                    case 0:
+                                            if (b.getProu().getPosX() - i == coordonnee.getPosX() 
+                                                    && b.getProu().getPosY() == coordonnee.getPosY()) {
+                                                    ok = true;
+                                            }
+                                            break;
+                                    case 1 :
+                                            if (b.getProu().getPosY() - i == coordonnee.getPosY()
+                                                    && b.getProu().getPosX() == coordonnee.getPosX()) {
+                                                    ok = true;
+                                            }
+                                            break;
+                                    case 2 :
+                                            if (b.getProu().getPosX() + i == coordonnee.getPosX()
+                                                    && b.getProu().getPosY() == coordonnee.getPosY()) {
+                                                    ok = true;
+                                            }
+                                            break;
+                                    case 3 :
+                                            if (b.getProu().getPosY() + i == coordonnee.getPosY()
+                                                    && b.getProu().getPosX() == coordonnee.getPosX()) {
+                                                    ok = true;
+                                            }
+                                    default:
+                                            break;
+                                    }
+                            }
+                    }
+                    // bateau trouvé à la coordonnée placée en paramètre
+                    if (ok) {
+                            return b;
+                    }
+            }
+            
+            // Aucun bateau trouvé
+            if (!ok) {
+                    return null;
+            }
+            return null;
+    }
 
 }

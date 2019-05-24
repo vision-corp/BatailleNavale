@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Jeu.classes.Bateau;
+import Jeu.classes.Coordonnee;
 import Jeu.classes.CoupJoue;
 import Jeu.classes.Mer;
 
@@ -40,33 +41,28 @@ public class GestionSauvegarde {
         if (nom.length != 1) {
             System.err.println("Erreur : vous devez spécifier le nom du fichier JSON.");
             System.err.println();
-            System.err.println("Usage : java GenerateurJSON fichier.json");
+            System.err.println("Usage : fichier.json");
             System.err.println("\toù 'fichier.json' est le nom du fichier dans lequel sauvegarder");
             System.exit(-1);
         }
 
         // Génération du JSON depuis un tableau d'objets
-        // sauvegarde des objets Bateau et taille de la mer et Coup Jouée
-        Object tabObjets[] = new Bateau[merOrdinateur.getBateaux().size() + coupJoueJoueur.getCoordSaisie().size() + 2];
-        int indice = 0; // indice de parcours du tableau précédemment initialisé
-        // Objets Bateaux
-        for (int i = 0; i < merOrdinateur.getBateaux().size(); i++) {
-            tabObjets[i] = merOrdinateur.getBateaux().get(i);
-            indice++;
+        // sauvegarde les Coups joués
+        Coordonnee  tabCoupJoue[] = new Coordonnee [coupJoueJoueur.getCoordSaisie().size()];
+        for (int i = 0; i < coupJoueJoueur.getCoordSaisie().size(); i++) {
+            tabCoupJoue[i] = coupJoueJoueur.getCoordSaisie().get(i);
         }
-        // coup Jouée
-        for (int i = indice; i < coupJoueJoueur.getCoordSaisie().size(); i++) {
-            tabObjets[i] = coupJoueJoueur.getCoordSaisie().get(i);
-            indice++;
-        }
-        // taille de la mer
-        tabObjets[indice] = merOrdinateur.getLargeur();
-        tabObjets[indice + 1] = merOrdinateur.getLongueur();
-        JSONObject objet = new JSONObject();
-
+        //sauvegarde de la mer
+        Mer tabMer[] = new Mer[1];
+        tabMer[0]=merOrdinateur;
+        
+        
+        JSONObject objet = new JSONObject();        
+        
         // Ajout du tableau
         try {
-            objet.put("contacts", new JSONArray(tabObjets));
+            objet.put("CoupJoue", new JSONArray(tabCoupJoue));
+            objet.put("Mer", new JSONArray(tabMer));
         } catch (JSONException e) {
             System.err.println("Erreur lors de l'insertion du tableau.");
             System.err.println(e);
@@ -150,17 +146,13 @@ public class GestionSauvegarde {
         // Création d'un objet JSON
         JSONObject objet = new JSONObject(json);
         System.out.println("Contenu JSON : ");
-        System.out.println(json);
 
         // Affichage à  l'écran
-        JSONArray tableau = objet.getJSONArray("contacts");
-        System.out.println("Liste des Bateau :");
-        for (int i = 0; i < merOrdinateur.getBateaux().size(); i++) {
+        JSONArray tableau = objet.getJSONArray("CoupJoue");
+        for (int i = 0; i < tableau.length(); i++) {
             JSONObject element = tableau.getJSONObject(i);
-            System.out.print("sens=" + element.getInt("sens"));
-            System.out.print(", taille=" + element.getInt("taille"));
-            System.out.print(", CaseTouchée(s)=" + element.getInt("nbCaseTouche"));
-            System.out.println(", nom=" + element.getString("nom"));
+            System.out.print("PosX=" + element.getInt("posX"));
+            System.out.println(", PosY=" + element.getString("posY"));
         }
 
     }

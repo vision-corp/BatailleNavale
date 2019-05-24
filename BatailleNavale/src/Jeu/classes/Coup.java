@@ -6,30 +6,36 @@
 package Jeu.classes;
 
 import java.util.Scanner;
+import java.util.List;
+import Jeu.classes.Coordonnee;
 
 /**
- * Coup joué par l'utilisateur ainsi que toutes les méthodes
- * lui soyant lié
+ * Coup jouÃ© par l'utilisateur ainsi que toutes les mÃ©thodes
+ * lui soyant liÃ©
  * @author onsenfou
  */
 public class Coup {
 
-	/** Analyseur lexical de l'entrée standard */
+	/** Analyseur lexical de l'entrÃ©e standard */
 	Scanner entree = new Scanner(System.in);
 
-	/** Valeur non convetie entrée par l'utilisateur */
+	/** Valeur non convetie entrÃ©e par l'utilisateur */
 	private String valeurEntree;
 	
+	/**
+	 * commenter l'etat initial atteint
+	 * @param valeurEntree
+	 */
 	public Coup(String valeurEntree) {
 		this.valeurEntree = valeurEntree;
 	}
 	
 	/**
-	 * Détermine si le coup joué par l'utilisateur est valide 
-	 * par rapport à la mer jouée
-	 * @param aTester chaine correspondant au coup joué
-	 * @param largeurMer largeur de la mer jouée
-	 * @param longueur longueur de la mer jouée
+	 * DÃ©termine si le coup jouÃ© par l'utilisateur est valide 
+	 * par rapport Ã  la mer jouÃ©e
+	 * @param aTester chaine correspondant au coup jouÃ©
+	 * @param largeurMer largeur de la mer jouÃ©e
+	 * @param longueurMer 
 	 * @return valide : true si valide
 	 *                  false si faux
 	 */
@@ -38,10 +44,10 @@ public class Coup {
 		int[] coordConvertie;
 		
 		valide = false;
-		if (!(aTester.length() <= 1 || aTester.length() > 3 )) {
+		if (!(aTester.length() <= 1 || aTester.length() > 3 ) && aTester.charAt(0) >= 65 && aTester.charAt(0) <= 90) {
 			coordConvertie = convertion(aTester);
  
-			/* test si l'axe des ordonnées saisie est correcte */
+			/* test si l'axe des ordonnÃ©es saisie est correcte */
 			if ((65 <= coordConvertie[1] && coordConvertie[1] < 65+largeurMer)
 				&& (coordConvertie[0] > 0 && coordConvertie[0] <= longueurMer)) {
 				valide = true;
@@ -51,13 +57,14 @@ public class Coup {
 	}
 	
 	/**
-	 * Convertie une chaine contenant des coordoonées, en coordonnes exploitable
-	 * @return convertie tableau de 2 éléments (ordonnée, abscisse) exploitable
+	 * Convertie une chaine contenant des coordoonÃ©es, en coordonnes exploitable
+	 * @param aConvertir 
+	 * @return convertie tableau de 2 Ã©lÃ©ments (ordonnÃ©e, abscisse) exploitable
 	 */
 	public int[] convertion(String aConvertir) {
 		int[] convertie = new int[2];
 		
-		/* On récupère la valeur de l'ordonnée */
+		/* On rÃ©cupÃ¨re la valeur de l'ordonnÃ©e */
 		convertie[0] = Integer.parseInt(aConvertir.substring(1));
 		convertie[1] = aConvertir.charAt(0);
 		
@@ -70,4 +77,66 @@ public class Coup {
 	public String getValeurEntree() {
 		return valeurEntree;
 	}
+	
+	/**
+         * Conseille le joueur sur la pertinance des coups qu'il vient de jouer
+	 * @param coupJoueJoueur 
+	 * @param coordCoupJoue 
+         * @return coupDejaJoue quand le coup que le joueur a jouer a dÃ©ja eteï¿½ jouï¿½
+         */
+        public String conseils(CoupJoue coupJoueJoueur, Coordonnee coordCoupJoue) {
+                
+                /* Liste des coups jouï¿½s */
+                List<Coordonnee> coupJoues = coupJoueJoueur.getCoordSaisie();
+                
+                /* String retournï¿½e quand le coup jouï¿½ ï¿½ dï¿½jï¿½ jouï¿½ */
+                String coupDejaJoue;
+
+                /* String retournï¿½e quand le coup est jouï¿½ trop loin d'un touchï¿½ */
+                String coupTropLoin;
+                
+                /* String retournï¿½e quand le coup jouï¿½ est en diagonale du coup touchï¿½ */
+                String coupDiagonale;
+
+                int coordX,  // coordonnï¿½es du coup jouï¿½
+                        coordY; 
+                
+                int coordXTouche,       // coordonnï¿½es du dernier coup touchï¿½
+                    coordYTouche;
+
+                coupDejaJoue = "Ne jouez pas le mÃªme coup !";
+
+                coupTropLoin = "Essayez de jouer autour d'un coup touchÃ© !";
+                
+                coupDiagonale = "Il n'y a pas de situation d'abordage, et un bateau ne peut pas ï¿½tre placï¿½ en diagonale";
+
+                /** Test d'un coup dï¿½jï¿½ jouï¿½ */
+                if (coupJoueJoueur.estJoue(coordCoupJoue)) {
+                        
+                        return coupDejaJoue;
+                }
+
+                /** Test d'un coup ï¿½loignï¿½ d'un touchï¿½ */
+
+                coordX = coordCoupJoue.getPosX();
+                coordY = coordCoupJoue.getPosY();
+
+                /* On rï¿½cupï¿½re le dernier coup //TODO le dernier coup touchï¿½ */
+                coordXTouche = coupJoues.get(coupJoues.size()-1).getPosX();
+                coordYTouche = coupJoues.get(coupJoues.size()-1).getPosY();
+
+                if ((Math.abs(coordXTouche - coordX)) > 3 || (Math.abs(coordYTouche - coordY)) > 3 ) {
+                        
+                        return coupTropLoin;
+                }
+                
+                /** Test d'un coup en diagonale d'un coup dï¿½jï¿½ jouï¿½ */
+                if ((coordXTouche == coordX - 1 || coordXTouche == coordX + 1) 
+                      && (coordYTouche == coordY - 1 || coordYTouche == coordY + 1)) {
+                        
+                        return coupDiagonale;
+                }
+                
+                return "";
+        }
 }

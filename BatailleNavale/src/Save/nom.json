@@ -1,69 +1,80 @@
-{"contacts": [
-   {
-      "sens": 0,
-      "taille": 4,
-      "nbCaseTouche": 0,
-      "nom": "Porte Avions"
-   },
-   {
-      "sens": 1,
-      "taille": 3,
-      "nbCaseTouche": 0,
-      "prou": {
-         "posX": 1,
-         "posY": "A"
-      },
-      "nom": "Croiseur"
-   },
-   {
-      "sens": 1,
-      "taille": 3,
-      "nbCaseTouche": 0,
-      "nom": "Croiseur"
-   },
-   {
-      "sens": 0,
-      "taille": 2,
-      "nbCaseTouche": 0,
-      "nom": "Sous-Marin"
-   },
-   {
-      "sens": 0,
-      "taille": 2,
-      "nbCaseTouche": 0,
-      "nom": "Sous-Marin"
-   },
-   {
-      "sens": 0,
-      "taille": 2,
-      "nbCaseTouche": 0,
-      "nom": "Sous-Marin"
-   },
-   {
-      "sens": 0,
-      "taille": 1,
-      "nbCaseTouche": 0,
-      "nom": "Vedette"
-   },
-   {
-      "sens": 0,
-      "taille": 1,
-      "nbCaseTouche": 0,
-      "nom": "Vedette"
-   },
-   {
-      "sens": 0,
-      "taille": 1,
-      "nbCaseTouche": 0,
-      "nom": "Vedette"
-   },
-   {
-      "sens": 0,
-      "taille": 1,
-      "nbCaseTouche": 0,
-      "nom": "Vedette"
-   },
-   null,
-   null,
-   null
-]}
+{
+   "CoupJoue": [{
+      "posX": 1,
+      "posY": "A"
+   }],
+   "Mer": [{
+      "longueur": 12,
+      "taille": [
+         12,
+         12
+      ],
+      "largeur": 12,
+      "bateaux": [
+         {
+            "sens": 0,
+            "taille": 4,
+            "nbCaseTouche": 0,
+            "nom": "Porte Avions"
+         },
+         {
+            "sens": 1,
+            "taille": 3,
+            "nbCaseTouche": 0,
+            "prou": {
+               "posX": 1,
+               "posY": "A"
+            },
+            "nom": "Croiseur"
+         },
+         {
+            "sens": 1,
+            "taille": 3,
+            "nbCaseTouche": 0,
+            "nom": "Croiseur"
+         },
+         {
+            "sens": 0,
+            "taille": 2,
+            "nbCaseTouche": 0,
+            "nom": "Sous-Marin"
+         },
+         {
+            "sens": 0,
+            "taille": 2,
+            "nbCaseTouche": 0,
+            "nom": "Sous-Marin"
+         },
+         {
+            "sens": 0,
+            "taille": 2,
+            "nbCaseTouche": 0,
+            "nom": "Sous-Marin"
+         },
+         {
+            "sens": 0,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         },
+         {
+            "sens": 0,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         },
+         {
+            "sens": 0,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         },
+         {
+            "sens": 0,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         }
+      ]
+   }]
+}
