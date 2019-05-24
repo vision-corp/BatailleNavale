@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 // Import de classe crée 
 import Jeu.classes.Mer;
+import Jeu.outils.GestionSauvegarde;
 import Jeu.classes.Bateau;
 import Jeu.classes.Coup;
 import Jeu.classes.Coordonnee;
@@ -135,6 +136,7 @@ import Jeu.classes.CoupJoue;
 		  
 		  numCoup = 1;
 		  System.out.println("Début du jeu");
+		  
 		  /* Boucle tant que des bateaux sont encores sur la mer 
 		   * While utilisé pour ne rien faire si les bateaux
 		   * n'ont pas pu être placé  
@@ -176,6 +178,8 @@ import Jeu.classes.CoupJoue;
 				  }
 				  
 			  }
+			  GestionSauvegarde.Sauvegarde("nom",merOrdinateur, coupJoueJoueur);
+		          GestionSauvegarde.Restauration("nom", merOrdinateur);
 			  
 			  System.out.println(merOrdinateur.toString(coupJoueJoueur));
 			  /* Si liste de bateau de l'objet mer vide

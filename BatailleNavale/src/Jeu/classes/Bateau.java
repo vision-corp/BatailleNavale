@@ -109,7 +109,6 @@ public class Bateau {
     * Place le bateau sur la mer en lui attribuant : 
     * - Une coordonnee pour la proue du bateau
     * - Un sens 
-    * @param bateau bateau à placer sur la mer 
     * @return true si le bateau à bien était placé 
     *         false si le bateau n'a pas été placé
     */
@@ -125,7 +124,6 @@ public class Bateau {
    
    /**
 	 * Détermine si un bateau a été coulé ou pas
-	 * @param bateau à tester
 	 * @return true si coulé, false si non coulé complètement
 	 */
 	public boolean estCoule() {

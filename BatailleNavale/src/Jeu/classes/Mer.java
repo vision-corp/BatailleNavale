@@ -27,7 +27,7 @@ public class Mer {
 
     /** Ensemble des bateaux contenus dans la mer classé par taille decroissante 
      * Exemple : Taille 4 puis Taille 3 puis Taille 2...*/
-    List<Bateau> bateaux = new ArrayList<>();
+    public List<Bateau> bateaux = new ArrayList<>();
 
     /**
      * Objet contenant taille de la mer et sa référence
@@ -75,18 +75,23 @@ public class Mer {
         return bateaux;
     }
 
-    /** Ajout d'un bateau dans la mer */
+    /** Ajout d'un bateau dans la mer 
+     * @param bateau 
+     */
     public void ajouterBateau(Bateau bateau) {
         this.bateaux.add(bateau);
     }
 
-    /** Suppression d'un bateau de la mer */
+    /** Suppression d'un bateau de la mer 
+     * @param bateau 
+     */
     public void supprimerBatteau(Bateau bateau) {
         this.bateaux.remove(bateau);
     }
     
     /**
      * méthode d'affichage de la mer à l'écran 
+     * @param coup 
      * @return aAfficher chaine de carcactère mer à afficher à l'écran 
      */
     public String toString(CoupJoue coup) {

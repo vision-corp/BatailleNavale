@@ -20,6 +20,9 @@ public class CoupJoue {
 	 */
 	List<Coordonnee> coordSaisie = new ArrayList<>();
 
+	/**
+	 * commenter l'etat initial atteint
+	 */
 	public CoupJoue() {
 		
 	}
