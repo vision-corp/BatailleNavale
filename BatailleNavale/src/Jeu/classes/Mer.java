@@ -272,11 +272,6 @@ public class Mer {
                             return b;
                     }
             }
-            
-            // Aucun bateau trouvé
-            if (!ok) {
-                    return null;
-            }
             return null;
     }
 

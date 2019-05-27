@@ -20,6 +20,9 @@ public class Coordonnee {
     /** Position en ordonnée commancent à A sur un plan 2D*/
     private char posY;
 
+    /**
+     * commenter l'etat initial atteint
+     */
     public Coordonnee() {
     }
     
