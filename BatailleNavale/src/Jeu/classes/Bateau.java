@@ -39,6 +39,12 @@ public class Bateau {
      */
     private int nbCaseTouche;
 
+    /** position x du bateau */
+    private int posX;
+
+    /** position y du bateau*/
+    private char posY;
+
      /**
      * Création d'un nouveau bateau en utilisant des valeurs définis lors de l'instanciation
      * @param nom appellation du bateai
@@ -47,6 +53,22 @@ public class Bateau {
     public Bateau(String nom, int taille) {
         this.nom = nom;
         this.taille = taille;
+    }
+    
+    /**
+     * Création d'un nouveau bateau en utilisant des valeurs définis lors de l'instanciation
+     * @param nom
+     * @param sens
+     * @param taille
+     * @param nbCaseTouche
+     * @param prou
+     */
+    public Bateau(String nom, int sens, int taille, int nbCaseTouche, Coordonnee prou) {
+        this.nom = nom;
+        setSens(sens);
+        this.taille = taille;
+        setNbCaseTouche(nbCaseTouche);
+        setProu(prou);
     }
 
     /**
@@ -74,7 +96,8 @@ public class Bateau {
      * @param prou the prou to set
      */
     public void setProu(Coordonnee prou) {
-        this.prou = prou;
+        this.setPosX(prou.getPosX());
+        this.setPosY(prou.getPosY());
     }
 
     /**
@@ -138,5 +161,33 @@ public class Bateau {
        return "Bateau [nom=" + nom + ", taille=" + taille + ", sens=" + sens + ", prou=" + prou + ", nbCaseTouche="
                + nbCaseTouche + "]";
    }
+
+/**
+ * @return la valeur de  posX
+ */
+public int getPosX() {
+    return posX;
+}
+
+/**
+ * @param posX la nouvelle valeur de posX
+ */
+public void setPosX(int posX) {
+    this.posX = posX;
+}
+
+/**
+ * @return la valeur de  posY
+ */
+public char getPosY() {
+    return posY;
+}
+
+/**
+ * @param posY la nouvelle valeur de posY
+ */
+public void setPosY(char posY) {
+    this.posY = posY;
+}
 
 }

@@ -199,8 +199,8 @@ public class BatailleNavale {
                 }
 
             }
-            GestionSauvegarde.Sauvegarde("nom",merOrdinateur, coupJoueJoueur);
-            GestionSauvegarde.Restauration("nom", merOrdinateur);
+            //GestionSauvegarde.Sauvegarde("nom", merOrdinateur, coupJoueJoueur);
+            GestionSauvegarde.Restauration("nom", merOrdinateur, coupJoueJoueur);
 
             System.out.println(merOrdinateur.toString(coupJoueJoueur));
             /* Si liste de bateau de l'objet mer vide

@@ -1,0 +1,106 @@
+{
+   "CoupJoue": [
+      {
+         "posX": 6,
+         "posY": "G"
+      },
+      {
+         "posX": 2,
+         "posY": "B"
+      },
+      {
+         "posX": 3,
+         "posY": "B"
+      }
+   ],
+   "Mer": [{
+      "longueur": 12,
+      "taille": [
+         12,
+         12
+      ],
+      "largeur": 12,
+      "bateaux": [
+         {
+            "posX": 1,
+            "posY": "A",
+            "sens": 2,
+            "taille": 4,
+            "nbCaseTouche": 0,
+            "nom": "Porte Avions"
+         },
+         {
+            "posX": 1,
+            "posY": "A",
+            "sens": 1,
+            "taille": 3,
+            "nbCaseTouche": 0,
+            "nom": "Croiseur"
+         },
+         {
+            "posX": 2,
+            "posY": "E",
+            "sens": 1,
+            "taille": 3,
+            "nbCaseTouche": 0,
+            "nom": "Croiseur"
+         },
+         {
+            "posX": 10,
+            "posY": "D",
+            "sens": 1,
+            "taille": 2,
+            "nbCaseTouche": 0,
+            "nom": "Sous-Marin"
+         },
+         {
+            "posX": 4,
+            "posY": "C",
+            "sens": 3,
+            "taille": 2,
+            "nbCaseTouche": 0,
+            "nom": "Sous-Marin"
+         },
+         {
+            "posX": 3,
+            "posY": "H",
+            "sens": 1,
+            "taille": 2,
+            "nbCaseTouche": 0,
+            "nom": "Sous-Marin"
+         },
+         {
+            "posX": 12,
+            "posY": "E",
+            "sens": 2,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         },
+         {
+            "posX": 12,
+            "posY": "K",
+            "sens": 1,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         },
+         {
+            "posX": 3,
+            "posY": "K",
+            "sens": 2,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         },
+         {
+            "posX": 2,
+            "posY": "J",
+            "sens": 1,
+            "taille": 1,
+            "nbCaseTouche": 0,
+            "nom": "Vedette"
+         }
+      ]
+   }]
+}

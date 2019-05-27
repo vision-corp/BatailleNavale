@@ -28,6 +28,13 @@ public class CoupJoue {
 	}
 	
 	/**
+	 * Supprime tout le contenu de la liste des coordonnees
+	 */
+	public void suppCoup() {
+	    coordSaisie.clear();
+	}
+	
+	/**
 	 * Ajoute un coup joué à la liste de l'objet
 	 * @param coordonnees coordonnees du coup joué
 	 */

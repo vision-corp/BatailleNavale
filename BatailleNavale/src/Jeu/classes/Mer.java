@@ -90,6 +90,13 @@ public class Mer {
     }
     
     /**
+     * Suppression de l'arrayList contenant tous les bateaux
+     */
+    public void suppArrayBateau() {
+        bateaux.clear();
+    }
+    
+    /**
      * méthode d'affichage de la mer à l'écran 
      * @param coup 
      * @return aAfficher chaine de carcactère mer à afficher à l'écran 
@@ -240,26 +247,26 @@ public class Mer {
                                     // balaygae adapté en fonction de l'orientation du bateau
                                     switch (b.getSens()) {
                                     case 0:
-                                            if (b.getProu().getPosX() - i == coordonnee.getPosX() 
-                                                    && b.getProu().getPosY() == coordonnee.getPosY()) {
+                                            if (b.getPosX() - i == coordonnee.getPosX() 
+                                                    && b.getPosY() == coordonnee.getPosY()) {
                                                     ok = true;
                                             }
                                             break;
                                     case 1 :
-                                            if (b.getProu().getPosY() - i == coordonnee.getPosY()
-                                                    && b.getProu().getPosX() == coordonnee.getPosX()) {
+                                            if (b.getPosY() - i == coordonnee.getPosY()
+                                                    && b.getPosX() == coordonnee.getPosX()) {
                                                     ok = true;
                                             }
                                             break;
                                     case 2 :
-                                            if (b.getProu().getPosX() + i == coordonnee.getPosX()
-                                                    && b.getProu().getPosY() == coordonnee.getPosY()) {
+                                            if (b.getPosX() + i == coordonnee.getPosX()
+                                                    && b.getPosY() == coordonnee.getPosY()) {
                                                     ok = true;
                                             }
                                             break;
                                     case 3 :
-                                            if (b.getProu().getPosY() + i == coordonnee.getPosY()
-                                                    && b.getProu().getPosX() == coordonnee.getPosX()) {
+                                            if (b.getPosY() + i == coordonnee.getPosY()
+                                                    && b.getPosX() == coordonnee.getPosX()) {
                                                     ok = true;
                                             }
                                     default:

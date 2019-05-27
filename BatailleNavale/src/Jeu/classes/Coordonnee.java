@@ -42,7 +42,7 @@ public class Coordonnee {
     	this.posX = coordonnees[0];
     	this.posY = (char)coordonnees[1];
     }
-
+    
     /**
      * @return the posX
      */

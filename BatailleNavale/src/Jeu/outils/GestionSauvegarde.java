@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -105,8 +106,9 @@ public class GestionSauvegarde {
      * restaure les objet de la partie enregistrer pour pouvoir la continuer
      * @param filename
      * @param merOrdinateur 
+     * @param coupJoueJoueur 
      */
-    public static void Restauration(String filename, Mer merOrdinateur ) {
+    public static void Restauration(String filename, Mer merOrdinateur, CoupJoue coupJoueJoueur) {
         String[] nom = new String[] { filename };
         // Vérification des arguments
         if (nom.length != 1) {
@@ -145,14 +147,31 @@ public class GestionSauvegarde {
 
         // Création d'un objet JSON
         JSONObject objet = new JSONObject(json);
-        System.out.println("Contenu JSON : ");
 
-        // Affichage à  l'écran
-        JSONArray tableau = objet.getJSONArray("CoupJoue");
-        for (int i = 0; i < tableau.length(); i++) {
-            JSONObject element = tableau.getJSONObject(i);
-            System.out.print("PosX=" + element.getInt("posX"));
-            System.out.println(", PosY=" + element.getString("posY"));
+        // Restitution du contexte
+        // Restitution CoupJoue
+        coupJoueJoueur.suppCoup();        // Suppression des coups joués par le joueur.
+        JSONArray tabCoup = objet.getJSONArray("CoupJoue");
+        for (int i = 0; i < tabCoup.length(); i++) {
+            JSONObject element = tabCoup.getJSONObject(i);
+            coupJoueJoueur.addCoup(
+                    new Coordonnee(element.getInt("posX"), element.getString("posY").charAt(0))
+                    );
+        }
+        // Restitution de la mer
+        merOrdinateur.suppArrayBateau(); // Suppression des Bateaux de la mer du contexte actuel.
+        JSONArray tableauMer = objet.getJSONArray("Mer");
+        JSONObject elementMer = tableauMer.getJSONObject(0);
+        JSONArray tabBateau = elementMer.getJSONArray("bateaux");
+        for (int i = 0; i < tabBateau.length(); i++) {
+            JSONObject bateau = tabBateau.getJSONObject(i);
+            merOrdinateur.ajouterBateau(new Bateau(
+                    bateau.getString("nom"),
+                    bateau.getInt("sens"),
+                    bateau.getInt("taille"),
+                    bateau.getInt("nbCaseTouche"),
+                    new Coordonnee(bateau.getInt("posX"), bateau.getString("posY").charAt(0))
+                    ));
         }
 
     }
