@@ -85,7 +85,7 @@ public class Coup {
      * @param coordCoupJoue les coordonnées du coup 
      * @return coupDejaJoue quand le coup que le joueur a jouer a déja ete� jou�
      */
-    public String conseils(CoupJoue coupJoueJoueur, Coordonnee coordCoupJoue) {
+    public String conseils(CoupJoue coupJoueJoueur, Coordonnee coordCoupJoue, Mer mer) {
 
         /* Liste des coups jou�s */
         List<Coordonnee> coupJoues = coupJoueJoueur.getCoordSaisie();
@@ -121,7 +121,7 @@ public class Coup {
         coordY = coordCoupJoue.getPosY();
 
 
-        if (Mer.trouverBateau()) {
+        if (mer.trouverBateau(coordCoupJoue) != null) {
 
 
             /* On r�cup�re le dernier coup //TODO le dernier coup touch� */

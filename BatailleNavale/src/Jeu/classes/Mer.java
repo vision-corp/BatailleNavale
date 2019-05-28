@@ -200,19 +200,32 @@ public class Mer {
      * bien un possibilité de les placer 
      */
     public void placerBateaux() {
-    	/*// TODO Coder méthode 
+    	// TODO Coder méthode 
     	boolean ok;  // Détermine si le placement unique à réussi 
     	List<Bateau> listeBateaux = getBateaux();
+
+    	int sens,
+    	    nbEssaie;
+    	Coordonnee prou;
     	
-    	// Envoyer Bateau à placer */
-    	Bateau bat;
-    	
-    		bat = bateaux.get(1);
-    		bat.setSens(1);
-    		bat.setProu(new Coordonnee(1, 'A'));
+    	nbEssaie = 0;
+    	ok = false;
+    	for (Bateau bat : listeBateaux) {
     		
-    		bat = bateaux.get(2);
-    		bat.setSens(1);
+    		while (nbEssaie != 100000 && !ok) {
+    			// Tirage au sort des différents valeurs 
+    	    	sens = (int) (Math.random() * ( 3 - 0 ));
+    	    	prou = new Coordonnee((int) (Math.random() * ( 12 - 1 )),
+    	    			              (char) (Math.random() * ( 12 - 1 )+65));
+    		    if (bat.placer(sens, prou, this)) {
+    		    	ok = true;
+    		    	bat.setProu(prou);
+    		    	bat.setSens(sens);
+    		    } else {
+    		    	nbEssaie++;
+    		    }
+    		}
+    	}
     
     }
     
